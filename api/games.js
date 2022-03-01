@@ -13,7 +13,7 @@ const index = async (req, res) => {
     try {
         const allGames = await Game.find({});
 
-        res.json({ books: allGames });
+        res.json({ games: allGames });
     } catch (error) {
         console.log('Error inside of /api/games');
         console.log(error);
@@ -35,77 +35,65 @@ const show = async (req, res) => {
 }
 
 const create = async (req, res) => {
-    const { title, author, price, pages, isbn, genre } = req.body;
+    const { title, platform, date, image } = req.body;
 
     try {
-        const newBook = await Book.create({ title, author, price, pages, isbn, genre });
-        console.log('new book created', newBook);
-        res.json({ book: newBook });
+        const newGame = await Game.create({ title, platform, date, image });
+        console.log('new game created', newGame);
+        res.json({ game: newGame });
     } catch (error) {
-       console.log('Error inside of POST of /api/books');
-       console.log(error);
-       return res.status(400).json({ message: 'Book was not created. Please try again...' }); 
+        console.log('Error inside of POST of /api/games');
+        console.log(error);
+        return res.status(400).json({ message: 'Game was not created. Please try again...' }); 
     }
 }
 
 const update = async (req, res) => {
     console.log(req.body);
     try {
-        // const book = await Book.findOne({ title: req.body.title });
-        // console.log(book);
+        const updatedGame = await Game.update({ title: req.body.title }, req.body); // updating the game
+        const game = await Game.findOne({ title: req.body.title });
 
-        // book.author = req.body.author;
-        // book.pages = req.body.pages;
-        // book.isbn = req.body.isbn;
-        // book.genre = req.body.genre;
-        // book.price = req.body.price;
+        console.log(updatedGame); // { n: 1, nModified: 0, ok: 1 }
+        console.log(game); // a game object 
 
-        // // save the new book info
-        // const savedBook = await book.save();
-
-        const updatedBook = await Book.update({ title: req.body.title }, req.body); // updating the book
-        const book = await Book.findOne({ title: req.body.title });
-
-        console.log(updatedBook); // { n: 1, nModified: 0, ok: 1 }
-        console.log(book); // a book object 
-
-        res.redirect(`/api/books/${book.id}`);
+        res.redirect(`/api/games/${game.id}`);
 
     } catch (error) {
         console.log('Error inside of UPDATE route');
         console.log(error);
-        return res.status(400).json({ message: 'Book could not be updated. Please try again...' });
+        return res.status(400).json({ message: 'Game could not be updated. Please try again...' });
     }
 }
 
-const deleteBook = async (req, res) => {
+const deleteGame = async (req, res) => {
     const { id } = req.params;
     try {
         console.log(id);
-        const result = await Book.findByIdAndRemove(id);
+        const result = await Game.findByIdAndRemove(id);
         console.log(result);
-        res.redirect('/api/books');
+        res.redirect('/api/games');
     } catch (error) {
         console.log('inside of DELETE route');
         console.log(error);
-        return res.status(400).json({ message: 'Book was not deleted. Please try again...' });
+        return res.status(400).json({ message: 'Game was not deleted. Please try again...' });
     }
 }
 
-// GET api/books/test (Public)
+// GET api/games/test (Public)
 router.get('/test', (req, res) => {
-    res.json({ msg: 'Books endpoint OK!'});
+    res.json({ msg: 'Games endpoint OK!'});
 });
 
-// GET -> /api/books/
+// GET -> /api/games/
 router.get('/', passport.authenticate('jwt', { session: false }), index); 
-// GET -> /api/books/:id
+// GET -> /api/games/:id
 router.get('/:id', passport.authenticate('jwt', { session: false }), show);
-// POST -> /api/books
+// POST -> /api/games
 router.post('/', passport.authenticate('jwt', { session: false }), create);
-// PUT -> /api/books
+// PUT -> /api/games
 router.put('/', passport.authenticate('jwt', { session: false }), update);
-// DELETE => /api/books/:id
-router.delete('/:id', passport.authenticate('jwt', { session: false }), deleteBook);
+// DELETE => /api/games/:id
+router.delete('/:id', passport.authenticate('jwt', { session: false }), deleteGame);
 
 module.exports = router;

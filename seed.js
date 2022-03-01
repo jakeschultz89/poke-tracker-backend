@@ -1,4 +1,14 @@
+import all models
+const { Game } = require('./models');
 
+Game.create([
+    {
+        title: "Pokémon Red & Blue",
+        date: "September 28, 1998",
+        platform: "Game Boy",
+        image: 
+    }
+])
 
 // import all models
 // const { Book } = require('./models');

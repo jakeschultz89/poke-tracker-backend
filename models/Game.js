@@ -6,17 +6,17 @@ const gameSchema = new Schema({
         type: String,
         required: true
     },
-    platform: {
+    date: {
         type: String,
         required: true
     },
-    date: {
+    platform: {
         type: String,
         required: true
     },
     image: {
         type: Image,
-        required: true
+        required: false
     }
 })
 
