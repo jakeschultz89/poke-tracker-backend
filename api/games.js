@@ -4,34 +4,33 @@ const express = require('express');
 const router = express.Router();
 const passport = require('passport');
 
-
 // Models
-const { Book } = require('../models');
+const { Game } = require('../models');
 
 // Controllers
 const index = async (req, res) => {
-    console.log('inside of /api/books');
+    console.log('inside of /api/games');
     try {
-        const allBooks = await Book.find({});
+        const allGames = await Game.find({});
 
-        res.json({ books: allBooks });
+        res.json({ books: allGames });
     } catch (error) {
-        console.log('Error inside of /api/books');
+        console.log('Error inside of /api/games');
         console.log(error);
-        return res.status(400).json({ message: 'Books not found. Please try again.' });
+        return res.status(400).json({ message: 'Games not found. Please try again.' });
     }
 }
 
 const show = async (req, res) => {
     const { id } = req.params;
     try {
-        // look for book based on id
-        const book = await Book.findById(id);
-        res.json({ book });
+        // look for game based on id
+        const game = await Game.findById(id);
+        res.json({ game });
     } catch (error) {
-        console.log('Error inside of /api/books/:id');
+        console.log('Error inside of /api/games/:id');
         console.log(error);
-        return res.status(400).json({ message: 'Book not found. Try again...' });
+        return res.status(400).json({ message: 'Game not found. Try again...' });
     }
 }
 

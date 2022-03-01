@@ -1,6 +1,6 @@
 # MERN Authentication `Backend`
 
-This is a code along for MERN Auth
+This is the backend for the Poke Tracker App
 
 Notes:
 1. Set up server

@@ -7,8 +7,10 @@ const passport = require('passport');
 const PORT = process.env.PORT || 8000;
 
 // API
+const articles = require('./api/articles');
+const games = require('./api/games');
+const posts = require('./api/posts');
 const users = require('./api/users');
-const books = require('./api/books');
 
 // Middleware
 app.use(cors());
@@ -26,8 +28,10 @@ app.get('/', (req, res) => {
 });
 
 // Routes
+app.use('/api/articles', articles);
+app.use('/api/games', games);
+app.use('/api/posts', posts);
 app.use('/api/users', users);
-app.use('/api/books', books);
 
 app.get('/*', (req, res) => {
     res.status(404).json({ message: 'Data not found' });
